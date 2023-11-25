@@ -1,0 +1,31 @@
+.product_img_container {
+    width: 200px; /* Adjust the width and height as per your requirements */
+    height: 100px;
+    overflow: hidden;
+  }
+  .product_img_container img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+  }
+
+  .product_ads {
+    width: 400px; /* Adjust the width and height as per your requirements */
+    height: 160px;
+    overflow: hidden;
+    background-color: rgb(252, 252, 252);
+  }
+  .nav-category{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+.product_on_cart{
+    background-color: aliceblue; 
+    text-align: center; 
+    padding:50px;
+}
+.related_product_container{
+    padding-left: 50px;
+}
