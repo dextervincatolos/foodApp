@@ -1,0 +1,62 @@
+
+<app-header></app-header>
+    <!-- content -->
+    <div class="container-fluid">
+        <div class="row">
+          <!-- Navbar Hidden on small screen-->
+            <div class="col-md-2 d-none d-sm-block" >
+                <app-sidebar></app-sidebar>
+            </div>
+          <!-- Navbar Hidden on small screen-->
+          <!-- Product list -->
+            <div id="productList" class="row col-sm-7 overflow-auto">
+                <!-- Product images will be dynamically displayed here -->
+                <div class="col-sm-3 product_container" *ngFor = "let product of getProduct">
+                    <div class="product_container_btn">
+                        <button class="btn btn-sm btn-dark rating_btn disabled"> <i class="bi bi-star-fill"></i> 4.5</button>
+                        <button id="favorite" class="btn btn-sm btn-light favorite_btn"> <i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="product">
+                        <img [src]=productImg alt="product_image">
+                    </div>
+                    <div class="product_details">
+                        <h5>{{ product._product_name }}</h5>
+                        <label for="">Price: {{ product._rating }}</label>
+                        <br>
+                        <button id="" class="btn btn-sm btn-danger form-control mt-1">
+                            <i class="bi bi-bag-plus-fill"></i>
+                            Add to cart
+                        </button>
+                    </div>
+
+                </div>
+                
+            </div>
+          <!-- Product list -->
+          <!-- Product Categories -->
+            <div class="col-sm-3 d-none d-sm-block">
+                <h3>Product Categories</h3>        
+                <ul id="categoryList2" class="nav flex-column">
+                    <!-- Populate Product Categories here-->
+                    <li class="nav-item">
+                        <a href="" class="nav-category">
+                            <div class="rounded-div">
+                                <img [src]=productImg alt=""> 
+                            </div>
+                            <h6 class="category_name"> Product Category name</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-category">
+                            <div class="rounded-div">
+                                <img [src]=productImg alt=""> 
+                            </div>
+                            <h6 class="category_name"> Product Category name</h6>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+          <!-- Product Categories -->
+        </div>
+      </div>
+      <!-- content -->

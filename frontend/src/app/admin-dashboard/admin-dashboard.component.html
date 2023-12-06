@@ -1,0 +1,126 @@
+
+<section class="vh-100">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-9">
+    
+                <h1 class="text-white mb-4">Register product <i class="bi bi-cup-straw"></i></h1>
+    
+                <form class="card" [formGroup] = "productEntry" (ngSubmit) = "saveProduct()" enctype="multipart/form-data">
+                    <div class="card-body">
+        
+                        <div class="row align-items-center pt-4 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                                <h6 class="mb-0">Product name</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                                <input type="text" class="form-control form-control-md" formControlName="_product_name" required/>
+            
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-2 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                                <h6 class="mb-0">Product category</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+
+                                <select class="form-control form-control-md" formControlName="_category" required>
+                                    <option value="">Select a category</option>
+                                    <option *ngFor="let category of foodCategories" [value]="category">{{ category }}</option>
+                                  </select>
+            
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center py-2 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                            <h6 class="mb-0">product description</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                            <textarea class="form-control" rows="3" formControlName="_description" placeholder="Simple description of the product" required></textarea>
+            
+                            </div>
+                        </div>
+            
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-2 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                                <h6 class="mb-0">Product quantity</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                                <input type="text" class="form-control form-control-md" formControlName="_quantity" required/>
+            
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center pt-2 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                                <h6 class="mb-0">Product Rating</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                                <input type="text" class="form-control form-control-md" formControlName="_rating" required/>
+            
+                            </div>
+                        </div>
+                        <div class="row align-items-center pt-2 pb-2">
+                            <div class="col-md-3 ps-5">
+            
+                                <h6 class="mb-0">Sold Item(s)</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                                <input type="text" class="form-control form-control-md" formControlName="_sold_item" required/>
+            
+                            </div>
+                        </div>
+            
+            
+                        <hr class="mx-n3">
+            
+                        <!-- <div class="row align-items-center py-2">
+                            <div class="col-md-3 ps-5">
+            
+                            <h6 class="mb-0">Product image</h6>
+            
+                            </div>
+                            <div class="col-md-9 pe-5">
+            
+                            <input class="form-control form-control-lg" type="file" (change)="onFileSelected($event)" accept="image/*" required/>
+                            <div class="small text-muted mt-2">Upload product image here...</div>
+            
+                            </div>
+                        </div> -->
+                        <hr class="mx-n3">
+            
+                        <div class="px-5 py-4">
+                            <button type="submit" class="btn btn-danger btn-lg">Register product</button>
+                        </div>
+        
+                    </div>
+                </form>
+    
+            </div>
+        </div>
+    </div>
+</section>
