@@ -2,7 +2,9 @@ let express = require('express');
 let app = express();
 let mongoose = require('mongoose');
 let cors = require('cors');
+
 let productRouter = require("./router/productRouter");
+let productCategoryRouter = require("./router/productCategoryRouter");
 
 const MONGO_URL="mongodb://127.0.0.1:27017/snack-pointDB";
 
@@ -12,6 +14,6 @@ mongoose.connect(MONGO_URL).then(res=> console.log("Database connected")).catch(
 app.use(express.json());
 app.use(cors());
 
-app.use("/snack-point",productRouter);
+app.use("/snack-point",[productRouter,productCategoryRouter]);
 
 app.listen(3000,()=> console.log("Server running on port 3000"));

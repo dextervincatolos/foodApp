@@ -36,22 +36,14 @@
           <!-- Product Categories -->
             <div class="col-sm-3 d-none d-sm-block">
                 <h3>Product Categories</h3>        
-                <ul id="categoryList2" class="nav flex-column">
+                <ul id="categoryList2" class="nav flex-column" *ngFor =" let category of getProductCategory">
                     <!-- Populate Product Categories here-->
                     <li class="nav-item">
                         <a href="" class="nav-category">
                             <div class="rounded-div">
                                 <img [src]=productImg alt=""> 
                             </div>
-                            <h6 class="category_name"> Product Category name</h6>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-category">
-                            <div class="rounded-div">
-                                <img [src]=productImg alt=""> 
-                            </div>
-                            <h6 class="category_name"> Product Category name</h6>
+                            <h6 class="category_name">{{ category._category }}</h6>
                         </a>
                     </li>
                 </ul>
