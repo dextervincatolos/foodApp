@@ -21,12 +21,14 @@
                     </div>
                     <div class="product_details">
                         <h5>{{ product._product_name }}</h5>
-                        <label for="">Price: {{ product._rating }}</label>
+                        <label for="">Price: {{ product._id }}</label>
                         <br>
-                        <button id="" class="btn btn-sm btn-danger form-control mt-1">
-                            <i class="bi bi-bag-plus-fill"></i>
-                            Add to cart
-                        </button>
+                            <button type="submit" (click)="addtoBasket(product._id)" class="btn btn-sm btn-danger form-control mt-1">
+                                <i class="bi bi-bag-plus-fill"></i>
+                                Add to cart
+                            </button>
+                       
+                       
                     </div>
 
                 </div>
