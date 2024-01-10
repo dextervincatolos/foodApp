@@ -1,17 +1,21 @@
 
 
 let userModel = require('../model/userModel');
+let bcryptjs = require('bcryptjs');
 
 let registerUser = async (req, res) => {
+    let user = req.body;
     try {
-        let user = req.body;
+        let salt = await bcryptjs.genSalt(10);
+        let encryptedpass = await bcryptjs.hash(user._password,salt);
+        user._password = encryptedpass;
         let result = await userModel.insertMany(user);
-        res.send(result);
-        console.log(user);	
+        console.log(user);
+        res.send("New user created successfully!");
+        	
     } catch (err) {
         res.status(500).send(err);
     }
-    res.send("done!");
 };
  
 let findUser = (req,res)=>{
