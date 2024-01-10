@@ -3,9 +3,9 @@ const FoodCategory = require('../model/productCategoryModel');
 
 // Array of food categories to seed into the database
 const foodCategories = [
-  { _category: 'Bread',_desc: ''},
-  { _category: 'Drink',_desc: '' },
-  { _category: 'Pizza',_desc: ''}
+  { _id:'6577bd91b957737a5088a9d3', _category: 'Bread',_desc: ''},
+  { _id:'6577bd91b957737a5088a9d4',_category: 'Drink',_desc: '' },
+  { _id:'6577bd91b957737a5088a9d5',_category: 'Pizza',_desc: ''}
 ];
 
 async function seedFoodCategories() {

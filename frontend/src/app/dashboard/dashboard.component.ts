@@ -21,21 +21,92 @@ export class DashboardComponent implements OnInit {
   getProduct:Array<Product> = [];
   getProductCategory:Array<ProductCategoryModel> = [];
 
+  userBasketItems: any[] = [];
+
+  getItemCount(): number {
+    return this.userBasketItems.reduce((count, item) => {
+      if (item._items && Array.isArray(item._items)) {
+        return count + item._items.length;
+      }
+      return count;
+    }, 0);
+  }
+
+  userId: string = '6572c6c7d5c003daca1de0e4'; // Get this from your authentication service
+
   constructor(public productService:ProductService, public productCategoryService:ProductCategoryService, public basketService:BasketService){}
 
-  loadproductDetails(){
-    this.productService.loadProductInfo().subscribe({
-      next:(result:any) => {
-        this.getProduct = result;
-      },
-      error:(error:any) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log("Fetched all products...")
-      }
-    });
-  }
+  addtoBasket(productId: string) {
+    // console.log('Product ID:', productId);
+ 
+     if (productId  && this.userId) { // Ensure productId is not empty
+ 
+       this.basketService.addtoBasket(productId,this.userId).subscribe({
+         next: (result: any) => {
+           console.log('Product added to cart:', result);
+           this.basketService.getUserBasketItems(this.userId).subscribe({
+            next: (result: any) => {
+              this.userBasketItems = result;
+              this.basketService.updateCartItemCount(this.getItemCount() );
+              console.log('items:', this.getItemCount());
+            },
+            error: (error: any) => {
+              console.log('Error retrieving basket items:', error);
+            }
+          });
+           
+         },
+         error: (error: any) => {
+           console.log('Error adding product to cart:', error);
+           // Handle error if needed
+         }
+       });
+     } else {
+       console.log('Product ID is empty or invalid.');
+       // Handle empty or invalid product ID case if needed
+     }
+   }
+  
+loadproductDetails() {
+  this.productService.loadProductInfo().subscribe({
+    next: (result: any[]) => {
+      const updatedProducts = result.map(product => {
+        if (product._product_image) {
+          try {
+            const bufferData = product._product_image.data.data; // Extracting the buffer data
+            const binary = String.fromCharCode(...bufferData); // Converting the buffer data to a binary string
+          
+            // Convert binary string to base64
+            const base64String = btoa(binary);
+
+            // Update _product_image field only if data exists and process it to base64
+            return {
+              ...product,
+              _product_image: `data:${product._product_image.contentType};base64,${base64String}`
+            };
+          } catch (error) {
+            console.log("Error processing product image:", error);
+            // If an error occurs during processing, return the original product
+            return product;
+          }
+        } else {
+          // If _product_image data doesn't exist, return the original product
+          return product;
+        }
+      });
+
+      this.getProduct = updatedProducts; // Assign the processed products to the variable
+    },
+    error: (error: any) => {
+      console.log(error);
+    },
+    complete: () => {
+      console.log("Fetched all products...");
+    }
+  });
+}
+
+  
 
   loadproductCategories(){
     this.productCategoryService.fetchproductCategory().subscribe({
@@ -51,29 +122,52 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  addtoBasket(productId: string) {
-    console.log('Product ID:', productId);
-
-    if (productId) { // Ensure productId is not empty
-      this.basketService.addtoBasket(productId).subscribe({
-        next: (result: any) => {
-          console.log('Product added to cart:', result);
-          // Handle success if needed
-        },
-        error: (error: any) => {
-          console.log('Error adding product to cart:', error);
-          // Handle error if needed
-        }
-      });
-    } else {
-      console.log('Product ID is empty or invalid.');
-      // Handle empty or invalid product ID case if needed
-    }
+    // Method to load products by category
+  loadProductsByCategory(categoryId: string): void {
+    this.productService.loadProductByCategory(categoryId).subscribe({
+      next: (result: any[]) => {
+        const updatedProducts = result.map(product => {
+          if (product._product_image) {
+            try {
+              const bufferData = product._product_image.data.data; // Extracting the buffer data
+              const binary = String.fromCharCode(...bufferData); // Converting the buffer data to a binary string
+            
+              // Convert binary string to base64
+              const base64String = btoa(binary);
+  
+              // Update _product_image field only if data exists and process it to base64
+              return {
+                ...product,
+                _product_image: `data:${product._product_image.contentType};base64,${base64String}`
+              };
+            } catch (error) {
+              console.log("Error processing product image:", error);
+              // If an error occurs during processing, return the original product
+              return product;
+            }
+          } else {
+            // If _product_image data doesn't exist, return the original product
+            return product;
+          }
+        });
+  
+        this.getProduct = updatedProducts; // Assign the processed products to the variable
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        console.log('Fetched products by category...');
+      }
+    });
   }
+
+
 
   ngOnInit(){
     this.loadproductDetails();
     this.loadproductCategories();
+ 
   }
 }
 

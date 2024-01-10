@@ -9,3 +9,4 @@ router.post('/createProductCategorySeeder',productCategorySeeder.seedFoodCategor
 router.get('/findProductCategory',productCategoryController.productCategory);
 
 module.exports = router;
+

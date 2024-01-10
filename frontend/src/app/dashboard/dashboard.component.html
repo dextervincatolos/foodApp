@@ -9,7 +9,7 @@
             </div>
           <!-- Navbar Hidden on small screen-->
           <!-- Product list -->
-            <div id="productList" class="row col-sm-7 overflow-auto">
+            <div id="productList" class="row col-sm-7 overflow-auto"> 
                 <!-- Product images will be dynamically displayed here -->
                 <div class="col-sm-3 product_container" *ngFor = "let product of getProduct">
                     <div class="product_container_btn">
@@ -17,7 +17,9 @@
                         <button id="favorite" class="btn btn-sm btn-light favorite_btn"> <i class="bi bi-heart"></i></button>
                     </div>
                     <div class="product">
-                        <img [src]=productImg alt="product_image">
+                        <!-- <img [src]=productImg alt="product_image"> -->
+                        <!-- <img  [src]="product._product_image" alt="product_image"> -->
+                        <img [src]="product._product_image" alt="Product Image" />
                     </div>
                     <div class="product_details">
                         <h5>{{ product._product_name }}</h5>
@@ -37,11 +39,17 @@
           <!-- Product list -->
           <!-- Product Categories -->
             <div class="col-sm-3 d-none d-sm-block">
-                <h3>Product Categories</h3>        
+                <h3>Product Categories</h3>   
+                <a class="nav-category" [routerLink]="['/dashboard']" (click)="loadproductDetails()">
+                    <div class="rounded-div">
+                        <img [src]=productImg alt=""> 
+                    </div>
+                    <h6 class="category_name">All Products</h6>
+                </a>     
                 <ul id="categoryList2" class="nav flex-column" *ngFor =" let category of getProductCategory">
                     <!-- Populate Product Categories here-->
                     <li class="nav-item">
-                        <a href="" class="nav-category">
+                        <a [routerLink]="['/dashboard']" class="nav-category" (click)="loadProductsByCategory(category._id)">
                             <div class="rounded-div">
                                 <img [src]=productImg alt=""> 
                             </div>

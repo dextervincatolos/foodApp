@@ -1,40 +1,58 @@
 let basketModel = require('../model/basketModel');
+let userModel = require('../model/userModel');
+
 
 let addtobasket = async (req, res) => {
     try {
-        let item = req.body;
-        let result = await basketModel.insertMany(item);
-        res.send(result);
+        
+        // Assuming productId is obtained from the request body
+        const productId = req.body._items;
+        const userId = req.body._user;
+
+        // Create or update the basket for the user
+        let basket = await basketModel.findOne({ _user: userId });
+
+        if (!basket) {
+            // If the basket doesn't exist for the user, create a new one
+           let newbasket = new basketModel({
+                _user: userId,
+                _items: [productId]
+                
+            });
+            await newbasket.save();
+        } else {
+            // If the basket exists, add the product to the items list
+            basket._items.push(productId);
+            await basket.save();
+        }
+
+        res.status(200).json({ message: "Item added to basket successfully" });
     } catch (err) {
         res.status(500).send(err);
     }
 };
 
-module.exports = {addtobasket};
 
-// // Assuming you've already imported the necessary models and dependencies
+let findbasket = (req,res)=>{
 
-// let addToBasket = async (req, res) => {
-//     try {
-//         const { productId } = req.body; // Assuming productId is sent in the request body
+    const userId = req.query.uid//req.user._id; // for now static
 
-//         // Fetch the user's basket (you might use some identifier like userId)
-//         const userId = 'user_id_here'; // Replace this with the actual user ID
-//         let basket = await basketModel.findOne({ user: userId });
+    // if(req.query.id){
+       // const _id = req.query.id;
+       basketModel.find({ _user: userId }).then(data=>{
 
-//         if (!basket) {
-//             // If the basket doesn't exist, you might want to create one
-//             basket = new basketModel({ user: userId, _items: [] });
-//         }
+            if(!data){
+                res.status(404).send({message: "Product with ID: " + userId + " doesn't exist."})
+            }else{
+                res.send(data)
+            }
+         }).catch(err=>{
+            res.status(500).send({message:"Error retrieving product with ID "+ userId})
+         })
+    
+}
 
-//         // Add the productId to the basket
-//         basket._items.push(productId);
-//         await basket.save();
 
-//         res.status(200).json({ message: 'Product added to basket successfully' });
-//     } catch (err) {
-//         res.status(500).send(err);
-//     }
-// };
+module.exports = { addtobasket,findbasket };
 
-// module.exports = { addToBasket };
+

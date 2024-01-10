@@ -1,3 +1,5 @@
+//My controller
+
 let getProductCategory = require('../model/productCategoryModel');
 
 let productCategory = (req,res)=>{
