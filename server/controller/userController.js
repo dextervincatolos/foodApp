@@ -18,73 +18,32 @@ let registerUser = async (req, res) => {
     }
 };
  
-let findUser = (req,res)=>{
+let loginUser = async (req,res)=>{
 
-    if(req.query.id){
-        const _id = req.query.id;
-        productModel.findById(_id).then(data=>{
+     try{
+        let user = req.body;
+        console.log(user);
+        let result = await userModel.findOne({_email:user._email});
 
-            if(!data){
-                res.status(404).send({message: "Product with ID: " + _id + " doesn't exist."})
+        if(result!=null){
+
+            let passwordVerify = await bcryptjs.compare(user._password,result._password);
+
+            if(passwordVerify){
+                res.send("Login Successfully");
             }else{
-                res.send(data)
+                res.send("Password Invalid");
             }
-         }).catch(err=>{
-            res.status(500).send({message:"Error retrieving product with ID "+ _id})
-         })
-    }else{
 
-        productModel.find().then(data=>{
-            res.send(data)
-        }).catch(err=>{
-            res.status(500).send({
-                message:err.message || "Some error occured while executing operation!"
-            });
-            
-        });
+        }else{
+            res.send("Invalid Email");
+        }
 
-    }
+     }catch(e){
+        console.log(e);
+     }
     
 }
 
-
-// let updateProduct = async (req, res) => {
-//     if (!req.body) {
-//         return res.status(400).send({ message: "Content cannot be empty!" });
-//     }
-
-//     const _id = req.params.id;
-
-//     productModel.findByIdAndUpdate(_id, req.body, { useFindAndModify: false }).then(data => {
-//         if (!data) {
-//             res.status(404).send({ message: `Cannot Update product with ${_id}. Product not found!` });
-//         } else {
-//             res.send(data);
-//         }
-//     }).catch(err => {
-//         res.status(500).send({ message: "Product update unsuccessful!" });
-//     });
-// }
-
-
-
-
-// let deleteProduct = (req,res)=>{
-
-//     const _id = req.params.id;
-
-//     productModel.findByIdAndDelete(_id).then(data=>{
-//         if(!data){
-//             res.status(404).send({message:`Cannot Delete product with id ${_id}. Product not found!`})
-//         }else{
-//             res.send({message:"Deleted Successfully!"})
-//         }
-
-//     }).catch(err=>{
-//         res.status(500).send({message:"Could not delete Product with id = "+_id});
-//     });
-
-// }
-
-module.exports = {registerUser,findUser};
+module.exports = {registerUser,loginUser};
 
