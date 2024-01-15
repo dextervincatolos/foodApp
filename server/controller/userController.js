@@ -2,6 +2,7 @@
 
 let userModel = require('../model/userModel');
 let bcryptjs = require('bcryptjs');
+let jwt = require('jsonwebtoken');
 
 let registerUser = async (req, res) => {
     let user = req.body;
@@ -30,7 +31,9 @@ let loginUser = async (req,res)=>{
             let passwordVerify = await bcryptjs.compare(user._password,result._password);
 
             if(passwordVerify){
-                res.send("Login Successfully");
+                let payload = {"name":user._email, "typeOfuser":user._accesstype}
+                let token = jwt.sign(payload,"skey");
+                res.send({"msg":"Login Successful", "token":token});
             }else{
                 res.send("Password Invalid");
             }
