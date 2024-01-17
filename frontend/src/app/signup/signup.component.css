@@ -1,0 +1,20 @@
+.gradient-form{
+    height:1000px; 
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-image: url('../../assets/images/download.jpg'); 
+}
+.applogo{
+    width: 150px; 
+    border-radius: 50%; 
+    margin-bottom: 10px;
+}
+.gradient-custom-2{
+    background-image: url('../../assets/images/bg1.avif'); 
+    background-repeat: no-repeat;  
+    background-size: cover;
+}
+.company-slogan-box{
+    background-color: rgb(201, 118, 125); 
+    opacity:.9;
+}

@@ -11,8 +11,8 @@ let registerUser = async (req, res) => {
         let encryptedpass = await bcryptjs.hash(user._password,salt);
         user._password = encryptedpass;
         let result = await userModel.insertMany(user);
-        console.log(user);
-        res.send("New user created successfully!");
+        console.log(result);
+        res.json({ message: "New user created successfully!" });
         	
     } catch (err) {
         res.status(500).send(err);

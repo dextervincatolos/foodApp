@@ -13,6 +13,7 @@ import { CartComponent } from './cart/cart.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     CartComponent,
     WishlistComponent,
     PageNotFoundComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
