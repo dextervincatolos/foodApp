@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { BasketModel } from '../basket-model';
 import { BasketService } from '../basket.service';
 import { AuthService } from '../auth.service';
+import { LogoutService } from '../logout.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +22,7 @@ export class HeaderComponent implements OnInit {
   
   userName: string | undefined;
 
-  constructor(public basketService:BasketService,private authService: AuthService){}
+  constructor(public basketService:BasketService,private authService: AuthService,private logoutService: LogoutService){}
 
   itemCount: number = 0;
   
@@ -66,6 +67,10 @@ export class HeaderComponent implements OnInit {
       this.userName = userInfo.fname + ' ' + userInfo.lname;
     }
  
+  }
+
+  logout(): void {
+    this.logoutService.logout();
   }
 }
 
