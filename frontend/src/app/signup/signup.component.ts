@@ -42,9 +42,8 @@ export class SignupComponent {
           console.log('Error during registration:', error);
         },
         complete: () => {
-          // alert('Registered successfully!');
-          // this.router.navigateByUrl('login');
-          console.log("New product registered successfully!")
+
+          console.log("New user registered successfully!")
           this.register.reset();
           // this.loadproductDetails();
          

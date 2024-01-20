@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BasketModel } from '../basket-model';
 import { BasketService } from '../basket.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-header',
@@ -18,8 +19,9 @@ export class HeaderComponent implements OnInit {
   userBasketItems: any[] = [];
 
   
+  userName: string | undefined;
 
-  constructor(public basketService:BasketService){}
+  constructor(public basketService:BasketService,private authService: AuthService){}
 
   itemCount: number = 0;
   
@@ -58,6 +60,11 @@ export class HeaderComponent implements OnInit {
     this.basketService.itemCount$.subscribe(count => {
       this.itemCount = count;
     });
+
+    const userInfo = this.authService.getUserInfo();
+    if (userInfo) {
+      this.userName = userInfo.fname + ' ' + userInfo.lname;
+    }
  
   }
 }

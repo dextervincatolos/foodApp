@@ -1,3 +1,5 @@
+
+
 let  jwt = require("jsonwebtoken");
 
 let verifyUserToken = async (req,res,next) => {
@@ -5,14 +7,14 @@ let verifyUserToken = async (req,res,next) => {
     let getToken = req.headers.authorization;
 
     if (!getToken) {
-        return res.send("Access Denied!");
+        return res.status(401).send("Access Denied!");
     }
 
     try {
         let verifyToken = await jwt.verify(getToken,"skey");
-
+        console.log("Decoded Token:", verifyToken);
         if (!verifyToken) {
-            res.send("Unauthorized request Invalid Token!");
+            return res.status(401).send("Unauthorized request Invalid Token!");
         }else{
             console.log("Valid Token");
         }
@@ -21,7 +23,7 @@ let verifyUserToken = async (req,res,next) => {
         next();
     } catch (e) {
         console.log(e);
-        res.send(e);
+        return res.status(500).send("Internal Server Error");
     }
 }
 

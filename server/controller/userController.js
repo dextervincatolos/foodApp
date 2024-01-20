@@ -31,9 +31,9 @@ let loginUser = async (req,res)=>{
             let passwordVerify = await bcryptjs.compare(user._password,result._password);
 
             if(passwordVerify){
-                let payload = {"name":user._email, "typeOfuser":user._accesstype}
+                let payload = {"email":user._email,"fname":result._first_name,"lname":result._last_name,"id":result._id, "typeOfuser":result._accesstype}
                 let token = jwt.sign(payload,"skey");
-                res.send({"msg":"Login Successful", "token":token});
+                res.send({"msg":"Login Successful", "token":token, "payload":payload});
             }else{
                 res.send("Password Invalid");
             }
@@ -44,6 +44,7 @@ let loginUser = async (req,res)=>{
 
      }catch(e){
         console.log(e);
+        res.status(500).send("Internal Server Error");
      }
     
 }

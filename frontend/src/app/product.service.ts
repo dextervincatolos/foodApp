@@ -1,7 +1,7 @@
 
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from './product-model';
 
@@ -17,11 +17,36 @@ export class ProductService {
   }
 
   loadProductInfo():Observable<Product[]>{
-    return this.httpClient.get<Product[]>('http://localhost:3000/snack-point/findProduct');
+
+    let token = localStorage.getItem('token');
+
+    if (token) {
+      let headers = new HttpHeaders({
+        'Authorization': `${token}`
+      });
+      return this.httpClient.get<Product[]>('http://localhost:3000/snack-point/findProduct', { headers });
+    }else{
+      throw new Error('Token not available');
+    }
+
+
+   
   }
 
+
   loadProductByCategory(categoryId: string): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`http://localhost:3000/snack-point/findProductsByCategory?categoryId=${categoryId}`);
+    
+    let token = localStorage.getItem('token');
+  
+    if (token) {
+      const headers = new HttpHeaders({
+        'Authorization': `${token}`
+      });
+  
+      return this.httpClient.get<Product[]>(`http://localhost:3000/snack-point/findProductsByCategory?categoryId=${categoryId}`, { headers });
+    } else {
+      throw new Error('Token not available');
+    }
   }
   
 }

@@ -15,5 +15,8 @@ export class UserService {
     return this.httpClient.post('http://localhost:3000/snack-point/newUser', user)
   }
 
-}
+  loginUser(userCred:any):Observable<any>{
+    return this.httpClient.post('http://localhost:3000/snack-point/loginUser', userCred)
+  }
 
+}
