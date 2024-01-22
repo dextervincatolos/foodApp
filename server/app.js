@@ -8,6 +8,7 @@ let productRouter = require("./router/productRouter");
 let productCategoryRouter = require("./router/productCategoryRouter");
 let basketRouter = require("./router/basketRouter");
 let userRouter = require("./router/userRouter");
+let adminRouter = require("./router/adminRouter");
 let wishlistRouter = require("./router/wishlistRouter");
 
 const MONGO_URL="mongodb://127.0.0.1:27017/snack-pointDB";
@@ -23,6 +24,6 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors());
 
-app.use("/snack-point",[productRouter(upload),productCategoryRouter,basketRouter,userRouter,wishlistRouter]);
+app.use("/snack-point",[productRouter(upload),productCategoryRouter,basketRouter,userRouter,adminRouter,wishlistRouter]);
 
 app.listen(3000,()=> console.log("Server running on port 3000"));
