@@ -1,7 +1,6 @@
 let mongoose = require('mongoose');
 const FoodCategory = require('../model/productCategoryModel');
 
-// Array of food categories to seed into the database
 const foodCategories = [
   { _id:'6577bd91b957737a5088a9d3', _category: 'Bread',_desc: ''},
   { _id:'6577bd91b957737a5088a9d4',_category: 'Drink',_desc: '' },
@@ -11,24 +10,31 @@ const foodCategories = [
 async function seedFoodCategories() {
   try {
 
-    await FoodCategory.deleteMany();
+    for (const category of foodCategories) {
 
-    // Insert the food categories
-    const createdCategories = await FoodCategory.insertMany(foodCategories);
-    console.log('Food categories seeded:', createdCategories);
+      let existingCategory = await FoodCategory.findById(category._id);
+
+      if (!existingCategory) {
+        
+        let createdCategory = await FoodCategory.create(category);
+
+        console.log('Food categories seeded:', createdCategory);
+        
+      }else{
+        console.log(`Food category '${category._category}' already exists, skipping seeding.`);
+      }
+    }
+    
   } catch (err) {
     console.error('Error seeding food categories:', err);
   } finally {
-    // Close the database connection after seeding
-    // mongoose.disconnect();
+    console.error('Food category Seeder executed Successfully.');
   }
 }
 
-// Invoke the seeding function
 seedFoodCategories()
   .catch(err => {
     console.error('Error during seeding:', err);
-    // mongoose.disconnect();
   });
 
 module.exports = {seedFoodCategories };

@@ -25,13 +25,13 @@ async function seedAdminUser() {
         console.log('Administrator seeded Successfully');
         
     }else{
-        console.log('Administrator already exists, skipping seeding.');
+        console.log('Administrator already exist, skipping seeding.');
     }
 
   } catch (err) {
     console.error('Error seeding administrator:', err);
   } finally {
-    console.log('Seed executed Successfully.');
+    console.log('Administrator Seeder executed Successfully.');
   }
 }
 
