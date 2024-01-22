@@ -32,12 +32,20 @@ export class LoginComponent {
       let userCred = this.login.value;
       this.userService.loginUser(userCred).subscribe({
         next: (result:any) => {
-          //console.log('Token:', result.token);
-          console.log('Payload:', result.payload);
+
+          let accesType = result.payload.typeOfuser;
+
           localStorage.setItem('token',result.token);
-          //localStorage.setItem('userInfo', JSON.stringify(result.payload));
           this.authService.setUserInfo(result.payload);
-          this.router.navigateByUrl('dashboard');
+          
+          if (accesType === 'admin') {
+
+            this.router.navigateByUrl('new_product');
+            
+          }else{
+            this.router.navigateByUrl('dashboard');
+          }
+
         },
         error: (error:any) => {
           console.log('Login Error:', error);

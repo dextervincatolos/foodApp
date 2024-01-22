@@ -21,4 +21,9 @@ export class AuthService {
   clearUserInfo(): void {
     localStorage.removeItem(this.userInfoKey);
   }
+
+  isLoggedIn(): boolean {
+    // Implement logic to check if the user is logged in, e.g., check for a token
+    return localStorage.getItem('token') !== null;
+  }
 }
