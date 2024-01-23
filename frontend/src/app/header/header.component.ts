@@ -22,7 +22,14 @@ export class HeaderComponent implements OnInit {
   
   userName: string | undefined;
 
-  constructor(public basketService:BasketService,private authService: AuthService,private logoutService: LogoutService){}
+  userId: string = '';
+
+  constructor(public basketService:BasketService,private authService: AuthService,private logoutService: LogoutService){
+
+    const userInfo = this.authService.getUserInfo();
+    this.userId = userInfo ? userInfo.id : '';
+  
+  }
 
   itemCount: number = 0;
   
@@ -38,10 +45,7 @@ export class HeaderComponent implements OnInit {
 
   countItem(){
 
-    // Get the logged-in user's ID (you may get this from your authentication service)
-    const userId = '6572c6c7d5c003daca1de0e4'; //temporary sessioned ID for testing
-
-    this.basketService.getUserBasketItems(userId)
+    this.basketService.getUserBasketItems(this.userId)
       .subscribe({
         next:(result) => {
           this.userBasketItems = result; 

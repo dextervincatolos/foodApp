@@ -12,14 +12,10 @@ let verifyUserToken = async (req,res,next) => {
 
     try {
         let verifyToken = await jwt.verify(getToken,"skey");
-        console.log("Decoded Token:", verifyToken);
+    
         if (!verifyToken) {
             return res.status(401).send("Unauthorized request Invalid Token!");
-        }else{
-            console.log("Valid Token");
         }
-        
-        console.log("I came here in Middleware");
         next();
     } catch (e) {
         console.log(e);

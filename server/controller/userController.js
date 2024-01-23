@@ -11,7 +11,6 @@ let registerUser = async (req, res) => {
         let encryptedpass = await bcryptjs.hash(user._password,salt);
         user._password = encryptedpass;
         let result = await userModel.insertMany(user);
-        console.log(result);
         res.json({ message: "New user created successfully!" });
         	
     } catch (err) {
@@ -23,7 +22,6 @@ let loginUser = async (req,res)=>{
 
      try{
         let user = req.body;
-        console.log(user);
         let result = await userModel.findOne({_email:user._email});
 
         if(result!=null){

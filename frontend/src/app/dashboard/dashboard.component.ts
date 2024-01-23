@@ -8,6 +8,7 @@ import { BasketModel } from '../basket-model';
 import { BasketService } from '../basket.service';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,14 +33,20 @@ export class DashboardComponent implements OnInit {
     }, 0);
   }
 
-  userId: string = '6572c6c7d5c003daca1de0e4'; // Get this from your authentication service
+  userId: string = '';
 
-  constructor(public productService:ProductService, public productCategoryService:ProductCategoryService, public basketService:BasketService){}
+  constructor(public productService:ProductService, public productCategoryService:ProductCategoryService, public basketService:BasketService,private authService: AuthService){
+
+    const userInfo = this.authService.getUserInfo();
+    this.userId = userInfo ? userInfo.id : '';
+  }
+
+  
+   
 
   addtoBasket(productId: string) {
-    // console.log('Product ID:', productId);
  
-     if (productId  && this.userId) { // Ensure productId is not empty
+     if (productId  && this.userId) { 
  
        this.basketService.addtoBasket(productId,this.userId).subscribe({
          next: (result: any) => {
