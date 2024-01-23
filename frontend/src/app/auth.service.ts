@@ -22,8 +22,57 @@ export class AuthService {
     localStorage.removeItem(this.userInfoKey);
   }
 
-  isLoggedIn(): boolean {
+  isUserLoggedIn(): boolean {
     // Implement logic to check if the user is logged in, e.g., check for a token
-    return localStorage.getItem('token') !== null;
+    //return localStorage.getItem('token') !== null;
+    if (localStorage.getItem('token') !== null) {
+      const userInfoString = localStorage.getItem('userInfo');
+
+      if (userInfoString) {
+        try {
+
+          let userInfo = JSON.parse(userInfoString);
+
+          return userInfo?.typeOfuser === 'user';
+
+        } catch (error) {
+
+          console.error('Error parsing userInfo:', error);
+          
+        }
+      }
+    }
+
+  
+    return false;
+
+  }
+
+  isAdminLoggedIn(): boolean {
+    // Implement logic to check if the user is logged in, e.g., check for a token
+    //return localStorage.getItem('token') !== null;
+    // if (localStorage.getItem('token') !== null) {
+      const userInfoString = localStorage.getItem('userInfo');
+
+      if (userInfoString) {
+        try {
+
+          let userInfo = JSON.parse(userInfoString);
+
+          return userInfo?.typeOfuser === 'admin';
+
+        } catch (error) {
+
+          console.error('Error parsing userInfo:', error);
+          
+        }
+      }
+    // }else{
+
+    // }
+
+  
+    return false;
+
   }
 }

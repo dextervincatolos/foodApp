@@ -10,11 +10,12 @@ import { CartComponent } from './cart/cart.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AuthGuardService } from './auth-guard.service';
+import { AuthGuardService } from './auth-userguard.service';
+import { AuthAdminguardService } from './auth-adminguard.service';
 import { AuthGuardLoggedoutService } from './auth-guard-loggedout.service';
 
 const routes: Routes = [
-  {path:'new_product', component: AdminDashboardComponent,canActivate: [AuthGuardService]},
+  {path:'new_product', component: AdminDashboardComponent,canActivate: [AuthAdminguardService]},
   {path:'', component: LoginComponent, canActivate: [AuthGuardLoggedoutService] },
   {path:'signup', component: SignupComponent, canActivate: [AuthGuardLoggedoutService] },
   {path:'dashboard', component: DashboardComponent,canActivate: [AuthGuardService]},

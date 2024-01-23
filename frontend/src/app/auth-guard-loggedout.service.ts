@@ -11,12 +11,22 @@ export class AuthGuardLoggedoutService {
 
   canActivate():boolean {
 
-    if (!this.authService.isLoggedIn()) {
+    const payload = this.authService.getUserInfo();
+
+    if (payload !== null) {
+      if (!this.authService.isUserLoggedIn() && this.authService.getUserInfo().typeOfuser === 'user'){
+        return true;
+      }
+  
+      if (!this.authService.isAdminLoggedIn() && this.authService.getUserInfo().typeOfuser === 'admin'){
+        return true;
+      }
+      
+    }else{
       return true;
     }
 
     const userType = this.authService.getUserInfo().typeOfuser;
-    
     if (userType === 'admin') {
       this.router.navigate(['/new_product']);
     } else {
