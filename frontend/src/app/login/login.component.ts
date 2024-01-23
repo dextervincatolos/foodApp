@@ -24,6 +24,7 @@ export class LoginComponent {
   })
 
   loginFailed = false;
+  loginErrorMessage: string | null = null;
 
   loginUser(){
 
@@ -49,18 +50,27 @@ export class LoginComponent {
         },
         error: (error:any) => {
           console.log('Login Error:', error);
+
+          this.loginFailed = true;
+
+          if (error.status === 401) {
+            this.loginErrorMessage = 'An unexpected error occurred. Please try again.';
+          } else {
+            this.loginErrorMessage = 'Invalid email or password.';
+          }
+
         },
         complete: () => {
 
           console.log("Login successfully!")
           this.login.reset();
-          // this.loadproductDetails();
          
         }
       })
 
     } else {
       this.loginFailed = true;
+      this.loginErrorMessage = 'All fields required.';
     }
 
   }

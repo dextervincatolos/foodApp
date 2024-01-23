@@ -14,8 +14,8 @@
   
                   <form [formGroup] = "login" (ngSubmit) = "loginUser()" >
                     <div *ngIf="loginFailed" class="alert alert-danger">
-                      Please fill in all required fields.
-                  </div>
+                      {{ loginErrorMessage }}
+                    </div>
                     <div class="form-outline mb-4">
                       <small class="text-danger" id="validatecred"></small>
                       <input type="text" formControlName="_email" class="form-control"  placeholder="Email" />
