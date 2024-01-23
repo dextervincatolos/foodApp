@@ -1,4 +1,30 @@
 
+    <!--Top Navigation-->
+    <div class="row mb-1" >
+        <div class="col-sm-12 col-md-12 col-12 mt-1">
+          <div class="btn-group settings">
+            <!--Visible on medium screen-->
+            <button type="button" class="settings btn btn-lg btn-outline-danger form-control dropdown-toggle d-none d-sm-inline" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> 
+              <span id="uname" class="d-none d-sm-inline"> Administrator</span>
+            </button>
+            <!--Visible on medium screen-->
+            <!--Visible on small screen-->
+            <button type="button" class="btn btn-md btn-outline-danger form-control dropdown-toggle d-inline d-sm-none" data-bs-toggle="dropdown" aria-expanded="false">
+                System Administrator <i class="bi bi-person-circle"></i>
+            </button>
+            <!--Visible on small screen-->
+            <ul class="dropdown-menu form-control">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" (click)="logout()" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+        <br>
+    </div>
+      <!--Top Navigation--> 
+      
 <section class="vh-100">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">

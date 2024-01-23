@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ProductService } from '../product.service';
 import { ProductCategoryService } from '../product-category.service';
 import { ProductCategoryModel } from '../product-category-model';
+import { LogoutService } from '../logout.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class AdminDashboardComponent {
     _sold_item: new FormControl()
   })
 
-  constructor(public productService:ProductService,  public productCategoryService:ProductCategoryService){}
+  constructor(public productService:ProductService,  public productCategoryService:ProductCategoryService,private logoutService: LogoutService){}
 //----------------------------------------------------------------------------------------------------------
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -82,5 +83,9 @@ export class AdminDashboardComponent {
     // this.refreshData();
     
     this.loadproductCategories();
+  }
+
+  logout(): void {
+    this.logoutService.logout();
   }
 }

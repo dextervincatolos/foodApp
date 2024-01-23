@@ -1,6 +1,8 @@
-section{
-    background-color: #e05340;
-} 
+
 form{
     border-radius: 15px;
+}
+.settings{
+    float: right;
+    margin-top: 10px;
 }
