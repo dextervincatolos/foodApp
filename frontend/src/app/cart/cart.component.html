@@ -14,28 +14,28 @@
         <div class="col-md-12"> <h3>Items on Cart</h3></div>
         <div id="cartitems" class="row d-flex"> 
         <!-- Products on cart will be dynamically displayed here -->
-            <div class="col-sm-12 d-flex">
+            <div class="col-sm-12 d-flex" *ngFor = "let item of cartItems">
                 <div class="col-md-1 d-flex align-items-center justify-content-center">
                     <h3 id="checkout">
                         <i class="bi bi-circle"></i>
                     </h3>
                 </div>
                 <div class="col-md-6 product_img_container d-flex align-items-center justify-content-center">
-                    <img [src]=productImg alt="">
+                    <img [src]="item._product_image" alt="Product Image" />
                 </div>
                 <div  class="col-md-5">
                     <table class="m-2">
                         <tr>
-                            <th class="text-success"> Product Name</th>
+                            <th class="text-success"> {{ item._product_name }}</th>
                         </tr>
                         <tr>
-                            <td> $ 00.00 </td>
+                            <td> {{ item._price }} </td>
                         </tr>
                         <tr>
                             <td>
                                 <p>
                                     <i class="bi bi-dash"></i>
-                                    <span> 1 </span>
+                                    <span> {{ item.quantity }} </span>
                                     <i class="bi bi-plus"></i>
                                 </p>
                             </td>

@@ -50,6 +50,22 @@ export class BasketService {
     //return this.httpClient.get<any>(`http://localhost:3000/snack-point/findMybasket/?uid=${userId}`);
   }
 
+
+  getMyCart(userId: string): Observable<any> {
+    let token = localStorage.getItem('token');
+
+    if (token) {
+        const headers = new HttpHeaders({
+            'Authorization': `${token}`
+        });
+
+        return this.httpClient.get<any>(`http://localhost:3000/snack-point/myCart/?uid=${userId}`, { headers });
+    } else {
+        throw new Error('Token not available');
+    }
+  }
+
+
   updateCartItemCount(count: number) {
     this.itemCountSubject.next(count);
   }
