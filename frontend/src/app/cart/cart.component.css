@@ -29,3 +29,9 @@
 .related_product_container{
     padding-left: 50px;
 }
+.delete-link{
+  cursor: pointer;
+}
+.checkout-link{
+  cursor: pointer;
+}

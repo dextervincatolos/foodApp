@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { BasketModel } from '../basket-model';
 import { BasketService } from '../basket.service';
@@ -14,15 +12,12 @@ import { LogoutService } from '../logout.service';
 export class HeaderComponent implements OnInit {
   title = 'Snack Point| Dashboard';
   appLogo: string = 'assets/images/logo2.jpg';
-
   productImg: string = 'assets/images/b2.jpg';
 
-  userBasketItems: any[] = [];
-
-  
-  userName: string | undefined;
-
   userId: string = '';
+  userBasketItems: any[] = [];
+  userName: string | undefined;
+  itemCount: number = 0;
 
   constructor(public basketService:BasketService,private authService: AuthService,private logoutService: LogoutService){
 
@@ -31,31 +26,41 @@ export class HeaderComponent implements OnInit {
   
   }
 
-  itemCount: number = 0;
-  
   getItemCount(): number {
+
     return this.userBasketItems.reduce((count, item) => {
+
       if (item._items && Array.isArray(item._items)) {
+
         return count + item._items.length;
+
       }
+
       return count;
     }, 0);
   }
   
-
   countItem(){
 
     this.basketService.getUserBasketItems(this.userId)
+
       .subscribe({
+
         next:(result) => {
+
           this.userBasketItems = result; 
           this.itemCount = this.getItemCount()
+
         },
         error:(error:any) => {
+
           console.log(error);
+
         },
         complete: () => {
+
           console.log("Fetched all products in your basket...")
+          
         }
       });
     

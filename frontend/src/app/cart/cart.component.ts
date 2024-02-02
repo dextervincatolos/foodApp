@@ -14,73 +14,255 @@ export class CartComponent {
   relatedP2: string='assets/images/p2.jpg';
   relatedP3: string='assets/images/d9.jpg';
 
-  cartItems: any[] = []; // Array to store cart items
-
   userId: string = '';
+  cartItems: any[] = [];
+  userBasketItems: any[] = [];
+  
+  isCartEmpty : boolean = false;
 
+
+  isCheckoutEnabled: boolean = false;
+  selectedItems: Set<string> = new Set<string>();
+
+  getItemCount(): number {
+    return this.userBasketItems.reduce((count, item) => {
+      if (item._items && Array.isArray(item._items)) {
+        return count + item._items.length;
+      }
+      return count;
+    }, 0);
+  }
+  
   constructor(private basketService: BasketService,private authService: AuthService) {
 
     const userInfo = this.authService.getUserInfo();
     this.userId = userInfo ? userInfo.id : '';
 
   }
+
+
   loadCartItems() {
     this.basketService.getMyCart(this.userId).subscribe({
+
+      next: (result: any) => {
+
+        if (result && result.items && result.items.length > 0) {
+
+          const productQuantities: { [productId: string]: number } = {};
+
+          const updatedProducts = result.items.reduce((uniqueProducts:any, product: any) => {
+
+            const productId = product._id;
+            productQuantities[productId] = (productQuantities[productId] || 0) + 1;
+            const existingProduct = uniqueProducts.find((uniqueProduct:any) => uniqueProduct._id === productId);
+
+            if (!existingProduct) {
+                  
+              uniqueProducts.push({
+                ...product,
+                _product_image: this.processImage(product._product_image),
+                quantity: 1 
+              });
+            } else {
+
+              existingProduct.quantity += 1;
+
+            }
+              return uniqueProducts;
+
+          }, []);
+
+          this.cartItems = updatedProducts;
+        } else {
+          
+          this.isCartEmpty = true;
+          
+        }
+      },
+      error: (error: any) => {
+
+        if (error && error.status === 404) {
+
+          this.isCartEmpty = true;
+
+        } else {
+          console.log('Unexpected error occurred.');
+        }  
+      }
+    });
+  }
+
+  deleteItem(index: number): void {
+
+    const productId = this.cartItems[index]._id;
+  
+    this.basketService.deleteItemFromCart(productId, this.userId).subscribe({
+
         next: (result: any) => {
-            const productQuantities: { [productId: string]: number } = {};
+  
+          this.basketService.getUserBasketItems(this.userId).subscribe({
 
-            const updatedProducts = result.items.reduce((uniqueProducts:any, product: any) => {
-                const productId = product._id;
+            next: (result: any) => {
 
-                // Increment the count for the current product ID
-                productQuantities[productId] = (productQuantities[productId] || 0) + 1;
+              this.userBasketItems = result;
+              this.basketService.updateCartItemCount(this.getItemCount() );
 
-                // Check if this product ID has already been added to uniqueProducts
-                const existingProduct = uniqueProducts.find((uniqueProduct:any) => uniqueProduct._id === productId);
+            },
 
-                if (!existingProduct) {
-                    // If this is the first occurrence, add it to uniqueProducts with the correct quantity
-                    uniqueProducts.push({
-                        ...product,
-                        _product_image: this.processImage(product._product_image),
-                        quantity: 1  // Set quantity to 1 for the first occurrence
-                    });
-                } else {
-                    // If the product already exists, update its quantity
-                    existingProduct.quantity += 1;
-                }
+            error: (error: any) => {
+              console.log('Error retrieving basket items:', error);
+            }
+          });
+            console.log('Item deleted from basket successfully!');
+            this.loadCartItems();
 
-                return uniqueProducts;
-            }, []);
-
-            this.cartItems = updatedProducts;
         },
         error: (error: any) => {
-            console.log('Error retrieving cart items:', error);
+          
+            console.log('Error deleting item:', error);
         }
     });
+  }
+
+removeItem(productId: string) {
+
+  this.basketService.removeItem(productId,this.userId).subscribe({
+
+    next: (result: any) => {
+
+      this.basketService.getUserBasketItems(this.userId).subscribe({
+
+        next: (result: any) => {
+
+          this.userBasketItems = result;
+          this.basketService.updateCartItemCount(this.getItemCount() );
+
+        },
+        error: (error: any) => {
+
+          console.log('Error retrieving basket items:', error);
+
+        }
+      });
+
+      console.log('Item removed successfully!');
+      this.loadCartItems();
+
+    },
+    error: (error: any) => {
+
+      console.log('Error removing item:', error);
+
+    }
+  });
 }
 
+addItem(productId: string) {
+ 
+  if (productId  && this.userId) { 
+
+    this.basketService.addtoBasket(productId,this.userId).subscribe({
+
+      next: (result: any) => {
+
+        this.basketService.getUserBasketItems(this.userId).subscribe({
+
+         next: (result: any) => {
+
+           this.userBasketItems = result;
+           this.basketService.updateCartItemCount(this.getItemCount() );
+
+         },
+         error: (error: any) => {
+           console.log('Error retrieving basket items:', error);
+         }
+       });
+
+       console.log('An Item is successfully added to basket!');
+       this.loadCartItems();
+        
+      },
+      error: (error: any) => {
+        console.log('Error adding Item to cart:', error);
+      }
+    });
+  } else {
+
+    console.log('Invalid.');
+
+  }
+}
+
+toggleCheckoutStatus(item: any): void {
+
+  const itemId = item._id;
+
+  if (this.selectedItems.has(itemId)) {
+
+    this.selectedItems.delete(itemId);
+
+  } else {
+
+    this.selectedItems.add(itemId);
+
+  }
+
+  this.updateCheckoutStatus();
+  this.calculateTotalAmount();
+}
+
+  updateCheckoutStatus(): void {
+
+  this.isCheckoutEnabled = this.selectedItems.size > 0;
+
+  }
+
+  getCheckoutIconClass(item: any): string {
+
+  return this.selectedItems.has(item._id) ? 'bi bi-circle-fill text-success' : 'bi bi-circle text-dark';
+
+  }
+
+calculateTotalAmount(): number {
+
+  let total = 0;
+
+  for (const item of this.cartItems) {
+
+    if (this.selectedItems.has(item._id)) {
+
+      total += item._price * item.quantity;
+
+    }
+  }
+  return total;
+}
 
 private processImage(imageData: any): string {
+
     if (imageData) {
+
         try {
+
             const bufferData = imageData.data.data;
             const binary = String.fromCharCode(...bufferData);
             const base64String = btoa(binary);
 
             return `data:${imageData.contentType};base64,${base64String}`;
+
         } catch (error) {
+
             console.log("Error processing product image:", error);
         }
     }
 
-    return ''; // Return an empty string if there's no image data
+    return '';
 }
 
-
   ngOnInit() {
+    
     this.loadCartItems();
+    
 }
 
 }

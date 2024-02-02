@@ -12,18 +12,21 @@
     <!-- Product list -->
     <div class="row col-sm-7 overflow-auto product_on_cart">
         <div class="col-md-12"> <h3>Items on Cart</h3></div>
-        <div id="cartitems" class="row d-flex"> 
+        <div id="cartitems" class="row d-flex" *ngIf="!isCartEmpty; else emptyCartMessage"> 
         <!-- Products on cart will be dynamically displayed here -->
-            <div class="col-sm-12 d-flex" *ngFor = "let item of cartItems">
+            <div class="col-sm-12 d-flex" *ngFor = "let item of cartItems let i = index" >
                 <div class="col-md-1 d-flex align-items-center justify-content-center">
                     <h3 id="checkout">
-                        <i class="bi bi-circle"></i>
+                        <!-- <a class="checkout-link text-dark"><i class="bi bi-circle"></i></a> -->
+                        <a class="checkout-link text-dark" (click)="toggleCheckoutStatus(item)">
+                            <i [class]="getCheckoutIconClass(item)"></i>
+                        </a>
                     </h3>
                 </div>
                 <div class="col-md-6 product_img_container d-flex align-items-center justify-content-center">
                     <img [src]="item._product_image" alt="Product Image" />
                 </div>
-                <div  class="col-md-5">
+                <div  class="col-md-8 col-sm-4">
                     <table class="m-2">
                         <tr>
                             <th class="text-success"> {{ item._product_name }}</th>
@@ -34,27 +37,39 @@
                         <tr>
                             <td>
                                 <p>
-                                    <i class="bi bi-dash"></i>
-                                    <span> {{ item.quantity }} </span>
-                                    <i class="bi bi-plus"></i>
+                                    <a class="delete-link text-dark" id="removeitem" (click)="removeItem(item._id)"> <i class="bi bi-dash"></i></a>
+                                        <span> {{ item.quantity }} </span>
+                                    <a class="delete-link text-dark" id="additem" (click)="addItem(item._id)"> <i class="bi bi-plus"></i></a>
                                 </p>
                             </td>
                         </tr>
                     </table>
-
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-center">
+                    <h4>
+                       <a class="delete-link text-danger" (click)="deleteItem(i)"> <i class="bi bi-trash3-fill"></i></a>
+                    </h4>
                 </div>
 
             </div>
             <hr>
         </div>
         <!-- Product Checkout-->
-        <div style="text-align: right;">
-            <h3 id="total" class="text-danger">$ 00.00</h3>
-            <input type="hidden" id="amountTopay" readonly value="0">
-            <button id="checkoutSelectedItem" class="btn btn-md btn-danger form-control disabled" onclick="checkoutSelectedItem()" ><i class="bi bi-coin"></i> Checkout</button>
+        <div style="text-align: right;" *ngIf="!isCartEmpty">
+            <h3 id="total" class="text-danger">$ {{ calculateTotalAmount() }}</h3>
+            <input type="hidden" id="amountTopay" readonly value="{{ calculateTotalAmount() }}">
+            <button id="checkoutSelectedItem" class="btn btn-md btn-danger form-control" [disabled]="!isCheckoutEnabled"  >
+                <i class="bi bi-coin"></i> Checkout
+            </button>
         </div>
         <!-- Product Checkout-->     
     </div>    
+    <ng-template #emptyCartMessage>
+        <!-- Display a message when the cart is empty or no record for the user -->
+        <h1 class="text-danger" *ngIf="isCartEmpty">
+            <i class="bi bi-bag-x"></i>
+        </h1>
+    </ng-template>
     <!-- Product list -->
     <!-- Related Products -->
     <div class="col-sm-3 d-none d-sm-block related_product_container">

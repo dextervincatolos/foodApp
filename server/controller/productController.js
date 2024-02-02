@@ -1,25 +1,14 @@
 let productModel = require('../model/productModel');
 
-// let newProduct = async (req, res) => {
-//     try {
-//         let product = req.body;
-//         let result = await productModel.insertMany(product);
-//         res.send(result);
-//     } catch (err) {
-//         res.status(500).send(err);
-//     }
-// };
 let newProduct = async (req, res) => {
     try {
-        //Extract product data from the request body
+  
         const { _product_name, _category, _price, _rating, _description, _quantity, _sold_item} = req.body;
 
-         // Check if file exists in the request
          if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        //Get the image data and content type
         const {buffer, mimetype} = req.file;
 
         const newProduct = new productModel({
@@ -35,16 +24,15 @@ let newProduct = async (req, res) => {
                 data: buffer,
                 contentType:mimetype
             }
-
-
         });
 
-        //save the new product to the database
         const result = await newProduct.save();
 
         res.status(201).json(result);
     }catch (err) {
+
         res.status(500).json({error: err.message});
+
     }
 };
 
@@ -55,14 +43,18 @@ let findProduct = (req,res)=>{
         productModel.findById(_id).then(data=>{
 
             if(!data){
-                // res.status(404).send({message: "Product with ID: " + _id + " doesn't exist."})
-                res.status(404).send({ message: "Product with ID: " + _id + " doesn't exist." });
+               
+                res.status(404).send({ message: "Product doesn't exist." });
+
             }else{
-                //res.send(data)
+                
                 res.send({ ...data._doc, _product_image: base64Image });
+
             }
          }).catch(err=>{
-            res.status(500).send({message:"Error retrieving product with ID "+ _id})
+
+            res.status(500).send({message:"Error retrieving product"})
+
          })
     }else{
 
@@ -79,10 +71,9 @@ let findProduct = (req,res)=>{
     
 }
 
-
 //-----------------------------------------------------------------------------------------------------------------------------
 let findProductsByCategory = (req, res) => {
-    const categoryId = req.query.categoryId; // Assuming you pass category ID in query params
+    const categoryId = req.query.categoryId;
 
     if (!categoryId) {
         return res.status(400).send({ message: 'Category ID is required.' });
