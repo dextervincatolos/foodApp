@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontend';
+
+  constructor(private titleService: Title) {}
+
+  ngOnInit() {
+      // Set the default document title
+      this.titleService.setTitle('Snack Point');
+  }
+
 }

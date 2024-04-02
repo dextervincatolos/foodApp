@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { BasketService } from '../basket.service';
 import { AuthService } from '../auth.service';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-cart',
@@ -33,7 +35,7 @@ export class CartComponent {
     }, 0);
   }
   
-  constructor(private basketService: BasketService,private authService: AuthService) {
+  constructor(private basketService: BasketService,private authService: AuthService,private titleService: Title) {
 
     const userInfo = this.authService.getUserInfo();
     this.userId = userInfo ? userInfo.id : '';
@@ -260,7 +262,8 @@ private processImage(imageData: any): string {
 }
 
   ngOnInit() {
-    
+
+    this.titleService.setTitle('Snack Point| Basket Page');
     this.loadCartItems();
     
 }

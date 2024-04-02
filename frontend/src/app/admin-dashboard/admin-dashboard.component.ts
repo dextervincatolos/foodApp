@@ -4,6 +4,7 @@ import { ProductService } from '../product.service';
 import { ProductCategoryService } from '../product-category.service';
 import { ProductCategoryModel } from '../product-category-model';
 import { LogoutService } from '../logout.service';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class AdminDashboardComponent {
     _sold_item: new FormControl()
   })
 
-  constructor(public productService:ProductService,  public productCategoryService:ProductCategoryService,private logoutService: LogoutService){}
+  constructor(public productService:ProductService,  public productCategoryService:ProductCategoryService,private logoutService: LogoutService,private titleService: Title){}
 //----------------------------------------------------------------------------------------------------------
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -35,7 +36,7 @@ export class AdminDashboardComponent {
         reader.onloadend = () => {
             const base64Image = reader.result as string;
             this.productEntry.patchValue({
-                _product_image: base64Image // Set Base64-encoded image to form control
+                _product_image: base64Image 
             });
         };
         reader.readAsDataURL(file);
@@ -53,14 +54,13 @@ export class AdminDashboardComponent {
       },
       complete: () => {
         console.log("New product registered successfully!")
-        // this.loadproductDetails();
       }
     })
     this.productEntry.reset();
 
-    const fileInput = <HTMLInputElement>document.getElementById('fileInput'); // Replace 'fileInput' with your file input ID
+    const fileInput = <HTMLInputElement>document.getElementById('fileInput');
     if (fileInput) {
-      fileInput.value = ''; // Clear the file input
+      fileInput.value = ''; 
     }
   }
 
@@ -80,9 +80,9 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit(){
-    // this.refreshData();
     
     this.loadproductCategories();
+    this.titleService.setTitle('Snack Point| Admin Dashboard');
   }
 
   logout(): void {

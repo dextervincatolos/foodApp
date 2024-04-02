@@ -1,10 +1,9 @@
-
-
 import { Component } from '@angular/core';
 
 import { FormGroup, FormControl,Validators  } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -16,7 +15,7 @@ export class SignupComponent {
   title = 'Snack Point| Login Page';
   appLogo: string = 'assets/images/logo2.jpg';
 
-  constructor(public userService:UserService,private router: Router){}
+  constructor(public userService:UserService,private router: Router,private titleService: Title){}
 
   register= new FormGroup({
     _first_name: new FormControl('',Validators.required),
@@ -54,6 +53,12 @@ export class SignupComponent {
       this.registrationFailed = true;
     }
 
+  }
+
+  ngOnInit() {
+
+    this.titleService.setTitle('Snack Point| Wishlist Page');
+    
   }
   
 }

@@ -9,6 +9,7 @@ import { BasketService } from '../basket.service';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +34,7 @@ export class DashboardComponent implements OnInit {
     }, 0);
   }
 
-  constructor(public productService:ProductService, public productCategoryService:ProductCategoryService, public basketService:BasketService,private authService: AuthService){
+  constructor(public productService:ProductService, public productCategoryService:ProductCategoryService, public basketService:BasketService,private authService: AuthService,private titleService: Title){
 
     const userInfo = this.authService.getUserInfo();
     this.userId = userInfo ? userInfo.id : '';
@@ -190,6 +191,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.titleService.setTitle('Snack Point| Dashboard Page');
     this.loadproductDetails();
     this.loadproductCategories();
  
